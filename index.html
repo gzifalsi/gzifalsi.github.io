@@ -8,13 +8,21 @@
   </script>
 
   <script>
-    var year;
+    var day, month, year;
     function getAge(){
-      const d = new Date("2023-03-05") //broken
-      if (d.getMonth() <= 3 && d.getDay < 6) {
+      const d = new Date("2023-03-05");
+      day = d.getDate();
+      month = d.getMonth();
+      if (month < 2) {
         year = 2003;
+      } else if (month > 2) {
+        year = 2002;
       } else {
-        year = 2002
+        if (day < 6) {
+          year = 2003;
+        } else {
+          year = 2002;
+        }
       }
       document.getElementById("age").innerHTML = d.getFullYear() - year;
     }
