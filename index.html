@@ -11,56 +11,56 @@
 <script>
 
 $('body').terminal({
-    help: function() {
-        this.echo('list of available commands:');
-        this.echo('    clear              clears the command line interface');
-        this.echo('    help               displays this list');
-        this.echo('    hello <username>   greets the user');
-        this.echo('    name               returns my full name');
-        this.echo('    age                returns how old I am');
-        this.echo('    education          where I got my education');
-        this.echo('    job                where I am currently working/used to work');
-        this.echo('    hobby              what are my interests');
-    },
+  help: function() {
+    this.echo('list of available commands:');
+    this.echo('    clear              clears the command line interface');
+    this.echo('    help               displays this list');
+    this.echo('    hello <username>   greets the user');
+    this.echo('    name               returns my full name');
+    this.echo('    age                returns how old I am');
+    this.echo('    education          where I got my education');
+    this.echo('    job                where I am currently working/used to work');
+    this.echo('    hobby              what are my interests');
+  },
 
-    hello: function(username) {
-        this.echo('hello, ' + username + '. welcome to this terminal');
-    },
+  hello: function(username) {
+    this.echo('hello, ' + username + '. welcome to this terminal');
+  },
 
-    name: function() {
-        this.echo('my name is Giacomo Ziveri')
-    },
+  name: function() {
+    this.echo('my name is Giacomo Ziveri')
+  },
 
-    age: function() {
-        const d = new Date();
-        day = d.getDate();
-        month = d.getMonth();
-        if (month < 2) {
-            year = 2003;
-        } else if (month > 2) {
-            year = 2002;
-        } else {
-            if (day < 6) {
-                year = 2003;
-            } else {
-                year = 2002;
-            }
-        }
-        age = d.getFullYear() - year;
-        this.echo('I\'m ' + age + ' years old');
+  age: function() {
+    const d = new Date();
+    day = d.getDate();
+    month = d.getMonth();
+    if (month < 2) {
+      year = 2003;
+    } else if (month > 2) {
+      year = 2002;
+    } else {
+      if (day < 6) {
+        year = 2003;
+      } else {
+        year = 2002;
+      }
+    }
+      age = d.getFullYear() - year;
+      this.echo('I\'m ' + age + ' years old');
     },
 
     education: function() {
-        this.echo('I\'m an undergraduate student, currently working towards a Computer Engineering degree at Politecnico di Milano');
+      this.echo('I\'m an undergraduate student, currently working towards a Computer Engineering degree at Politecnico di Milano');
     },
 
     job: function() {
-        this.echo('API Management Intern @ Alten, based in Milan, Italy');
+      this.echo('API Management Intern @ Alten, based in Milan, Italy');
     },
 
     hobby: function() {
-        this.echo('computer hardware, backend development, linux, cryptocurrencies, gaming, music');
-        this.echo('enter \'hobby_discover <hobbyIndex>\' to get a detailed explanation');
+      this.echo('computer hardware, backend development, linux, cryptocurrencies, gaming, music');
+      this.echo('enter \'hobby_discover <hobbyIndex>\' to get a detailed explanation');
     },
 
     hobby_discover: function(index) {
@@ -69,7 +69,7 @@ $('body').terminal({
           this.echo('invalid index!');
           break;
         case 0:  
-          this.echo('test');
+          this.echo('I\'ve been assembling computers since 2018. I like to keep myself up-to-date with news from the biggest hardware companies (Intel, AMD, nVIDIA ...)');
           break;
         case 1:
           this.echo('ciao');
