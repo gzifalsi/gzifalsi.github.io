@@ -23,8 +23,9 @@ $('body').terminal({
         this.echo('    hobby              what are my interests');
     },
 
-    hello: function(username) {
-        this.echo('hello, ' + username + '. welcome to this terminal');
+    hello: function(what) {
+        this.echo('hello, ' + what +
+                  '. welcome to this terminal');
     },
 
     name: function() {
@@ -51,31 +52,16 @@ $('body').terminal({
     },
 
     education: function() {
-        this.echo('I\'m an undergraduate student, currently working towards a Computer Engineering degree at Politecnico di Milano');
+        this.echo('I\'m an undergraduate student, currently working towards a Computer Engineering degree at Politecnico di Milano')
     },
 
     job: function() {
-        this.echo('API Management Intern @ Alten, based in Milan, Italy');
+        this.echo('API Management Intern @ Alten, based in Milan, Italy')
     },
 
     hobby: function() {
-        this.echo('computer hardware, backend development, linux, cryptocurrencies, gaming, music');
-        this.echo('enter \'hobby_discover <hobbyIndex>\' to get a detailed explanation');
+        this.echo('computer hardware, programming languages, linux distros, cryptocurrencies, music')
     },
-
-    hobby_discover: function(index) {
-      switch (index) {
-        default:
-          this.echo('invalid index!');
-          break;
-        case 0:  
-          this.echo('test');
-          break;
-        case 1:
-          this.echo('ciao');
-          break;
-      }
-    }
 }, {
     greetings: 'gzifalsi terminal (-.-)Zzz...\npro tip: use \'help\' to display a list of useful commands'
 });
