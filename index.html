@@ -1,44 +1,68 @@
 <!DOCTYPE html>
+<html>
 <head>
-  <title>work in progress</title>
-  <meta charset="utf-8" />
-  <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({ startOnLoad: true });
-  </script>
-
-  <script>
-    var day, month, year;
-    function getAge(){
-      const d = new Date();
-      day = d.getDate();
-      month = d.getMonth();
-      if (month < 2) {
-        year = 2003;
-      } else if (month > 2) {
-        year = 2002;
-      } else {
-        if (day < 6) {
-          year = 2003;
-        } else {
-          year = 2002;
-        }
-      }
-      document.getElementById("age").innerHTML = d.getFullYear() - year;
-    }
-  </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery.terminal/js/jquery.terminal.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery.terminal/css/jquery.terminal.min.css"/>
 </head>
-
 <body>
-  <h1>ciao</h1>
-  <p>!!! è vietato battere le mani ai lavoratori con le mani lerce !!!</p>
-  <p>però puoi restare nei paraggi a guardare il cantiere :)</p>
-  <pre class="mermaid">
-    graph LR
-      A --- B
-      B-->C[fa:fa-ban forbidden]
-      B-->D(fa:fa-spinner);
-  </pre>
-  <button onclick=getAge()>quanti anni ha giacomo?</button>
-  <p id="age"></p>
+<script>
+
+$('body').terminal({
+    help: function() {
+        this.echo('list of available commands:');
+        this.echo('    clear              clears the command line interface');
+        this.echo('    help               displays this list');
+        this.echo('    hello <username>   greets the user');
+        this.echo('    name               returns my full name');
+        this.echo('    age                returns how old I am');
+        this.echo('    education          returns where I got my education');
+        this.echo('    job                returns where I am currently working/used to work');
+        this.echo('    help               displays this list');
+    },
+
+    hello: function(what) {
+        this.echo('hello, ' + what +
+                  '. welcome to this terminal');
+    },
+
+    name: function() {
+        this.echo('my name is Giacomo Ziveri')
+    },
+
+    age: function() {
+        const d = new Date();
+        day = d.getDate();
+        month = d.getMonth();
+        if (month < 2) {
+            year = 2003;
+        } else if (month > 2) {
+            year = 2002;
+        } else {
+            if (day < 6) {
+                year = 2003;
+            } else {
+                year = 2002;
+            }
+        }
+        age = d.getFullYear() - year;
+        this.echo('I\'m ' + age + ' years old');
+    },
+
+    education: function() {
+        this.echo('I\'m an undergraduate student, currently working towards a Computer Engineering degree at Politecnico di Milano')
+    },
+
+    job: function() {
+        this.echo('API Management Intern @ Alten, based in Milan, Italy')
+    },
+
+    
+}, {
+    greetings: 'gzifalsi terminal (-.-)Zzz...\npro tip: use \'help\' to display a list of useful commands'
+});
+</script>
 </body>
+</html>
