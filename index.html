@@ -41,10 +41,10 @@ $('body').terminal({
   theme: function(toSet) {
     if (typeof toSet === "undefined") {
       this.echo('usage: theme <themeName>')
-      this.echo('themes available: dark (default), light, navy, green, DOOM')
+      this.echo('themes available: dark (default), light, navy, green, hackerman, DOOM')
     } else if (toSet == "dark") {
       this.echo('dark theme set');
-      $(this).css("background-color", "#000000");
+      $(this).css("background-color", "black");
       $(this).css("--color", "#a9a9a9");
       $(this).css("background-image", "");
       $("#doom").attr("src", "");
@@ -67,6 +67,13 @@ $('body').terminal({
       this.echo('green theme set');
       $(this).css("background-color", "#6cc551");
       $(this).css("--color", "#447604");
+      $(this).css("background-image", "");
+      $("#doom").attr("src", "");
+      $("#doom").get(0).pause();
+    } else if (toSet == "hackerman") {
+      this.echo('hackerman theme set');
+      $(this).css("background-color", "black");
+      $(this).css("--color", "green");
       $(this).css("background-image", "");
       $("#doom").attr("src", "");
       $("#doom").get(0).pause();
