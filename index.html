@@ -40,6 +40,7 @@ $('body').terminal({
 
   theme: function(toSet) {
     if (typeof toSet === "undefined") {
+      this.echo('usage: theme <themeName>')
       this.echo('themes available: dark (default), light, navy, green, DOOM')
     } else if (toSet == "dark") {
       this.echo('dark theme set');
