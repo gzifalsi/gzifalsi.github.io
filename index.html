@@ -22,27 +22,28 @@
 </head>
 <body>
 <script>
+var currentUser = "guest";
 
 $('body').terminal({
   help: function() {
     this.echo('list of available commands:');
-    this.echo('    clear              clears the command line interface');
-    this.echo('    help               displays this list');
-    this.echo('    theme              sets a theme for this page');
-    this.echo('    hello <username>   greets the user');
-    this.echo('    name               returns my full name');
-    this.echo('    age                returns how old I am');
-    this.echo('    education          where I got my education');
-    this.echo('    job                where I am currently working/used to work');
-    this.echo('    hobby              what are my interests');
-    this.echo('    contact            how to reach me');
+    this.echo('    clear                  clears the command line interface');
+    this.echo('    help                   displays this list');
+    this.echo('    theme                  sets a theme for this page');
+    this.echo('    login <username>       allows the user to login');
+    this.echo('    name                   returns my full name');
+    this.echo('    age                    returns how old I am');
+    this.echo('    education              where I got my education');
+    this.echo('    job                    where I am currently working/used to work');
+    this.echo('    hobby                  what are my interests');
+    this.echo('    contact                how to reach me');
   },
 
   theme: function(toSet) {
     if (typeof toSet === "undefined") {
-      this.echo('usage: theme <themeName>')
+      this.echo('usage: theme <themeName> OR theme <themeIndex>')
       this.echo('themes available: dark (default), light, navy, green, hackerman, DOOM')
-    } else if (toSet == "dark") {
+    } else if (toSet == "dark" || toSet == 0) {
       this.echo('dark theme set');
       $(this).css("background-color", "black");
       $(this).css("--color", "#a9a9a9");
@@ -50,7 +51,7 @@ $('body').terminal({
       $("#doom").attr("src", "");
       $("#doom").get(0).pause();
       currentTheme = "dark";
-    } else if (toSet == "light") {
+    } else if (toSet == "light" || toSet == 1) {
       this.echo('light theme set');
       $(this).css("background-color", "white");
       $(this).css("--color", "black");
@@ -58,7 +59,7 @@ $('body').terminal({
       $("#doom").attr("src", "");
       $("#doom").get(0).pause();
       currentTheme = "light";
-    } else if (toSet == "navy") {
+    } else if (toSet == "navy" || toSet == 2) {
       this.echo('navy theme set');
       $(this).css("background-color", "#086375");
       $(this).css("--color", "#1dd3b0");
@@ -66,7 +67,7 @@ $('body').terminal({
       $("#doom").attr("src", "");
       $("#doom").get(0).pause();
       currentTheme = "navy";
-    } else if (toSet == "green") {
+    } else if (toSet == "green" || toSet == 3) {
       this.echo('green theme set');
       $(this).css("background-color", "#6cc551");
       $(this).css("--color", "#447604");
@@ -74,7 +75,7 @@ $('body').terminal({
       $("#doom").attr("src", "");
       $("#doom").get(0).pause();
       currentTheme = "green";
-    } else if (toSet == "hackerman") {
+    } else if (toSet == "hackerman" || toSet == 4) {
       this.echo('hackerman theme set');
       $(this).css("background-color", "black");
       $(this).css("--color", "green");
@@ -82,7 +83,7 @@ $('body').terminal({
       $("#doom").attr("src", "");
       $("#doom").get(0).pause();
       currentTheme = "hackerman";
-    } else if (toSet == "DOOM") {
+    } else if (toSet == "DOOM" || toSet == 666) {
       this.echo('the only thing they fear is you');
       $(this).css("background", "url(src/doom.gif) fixed center no-repeat");
       $(this).css("background-size", "auto");
@@ -96,8 +97,10 @@ $('body').terminal({
     }
   },
 
-  hello: function(username) {
+  login: function(username) {
     this.echo('hello, ' + username + '. welcome to this terminal');
+    this.set_prompt(username + '@terminal~$ ');
+    currentUser = username;
   },
 
   name: function() {
@@ -172,9 +175,8 @@ $('body').terminal({
     }
 }, {
     checkArity: false,
-    greetings: '(-.-)Zzz...\ngzifalsi terminal\npro tip: use \'help\' to display a list of useful commands',
+    greetings: '(-.-)Zzz...\ngzifalsi terminal\npro tip: use \'help\' to display a list of useful commands\nremember that <> are not required in arguments\nAND THAT INDEXES START AT 0',
     prompt: 'guest@terminal~$ ',
-    color: 'red',
 });
 
 </script>
