@@ -64,30 +64,46 @@ $('body').terminal({
       this.echo('API Management Intern @ Alten, based in Milan, Italy');
     },
 
-    hobby: function() {
-      this.echo('computer hardware, backend development, linux, cryptocurrencies, gaming, music');
-      this.echo('enter \'hobby_discover <hobbyIndex>\' to get a detailed explanation');
-    },
-
-    hobby_discover: function(index) {
-      switch (index) {
-        default:
-          this.echo('invalid index!');
-          break;
-        case 0:  
-          this.echo('I\'ve been assembling computers since 2018. I like to keep myself up-to-date with news from the biggest hardware companies (Intel, AMD, nVIDIA ...)');
-          break;
-        case 1:
-          this.echo('ciao');
-          break;
+    hobby: function(arg = 0, index = -1) {
+      if (!arg){
+        this.echo('computer hardware, linux, cryptocurrencies, gaming, music, calisthenics');
+        this.echo('enter \'hobby discover <hobbyIndex>\' to get a detailed explanation');
+      } else if (arg == "discover") {
+        switch (index) {
+          default:
+            this.echo('please enter a valid index number');
+            break;
+          case 0:  
+            this.echo('I\'ve been assembling and repairing computers since 2018. I like to keep myself up-to-date with news from the biggest hardware companies (Intel, AMD, nVIDIA ...)');
+            break;
+          case 1:
+            this.echo('I have several linux servers running made out of old laptops and a Raspberry Pi-based PiHole. I\'m still learning things about different linux distros, mainly ubuntu-based ones which I like the most');
+            break;
+          case 2:
+            this.echo('When I turned 18, I started investing really small amounts of money into Bitcoin and other cryptocurrenices as an experiment. Didn\'t really do it for the big money, my goal was to get some experience on the field with finance and cryptos');
+            break;
+          case 3:
+            this.echo('Everything started when I got my Nintendo DS on Christmas of 2009, I didn\'t really stop playing video games since then');
+            break;
+          case 4:
+            this.echo('Last year I listened to music for 152k minutes on Spotify, that\'s almost a third of the year');
+            break;
+          case 5:
+            this.echo('During COVID-19 quarantine, I started training on discord with some friends. I started a daily routine and when the quarantine ended, I joined PoliMi\'s gym');
+            break;
+        }
+      } else {
+        this.echo('wrong argument: ' + arg);
       }
     },
 
     contact: function() {
       this.echo($('<a>LinkedIn profile: <a class="link" href="https://www.linkedin.com/in/giacomo-ziveri/" target="_blank">Giacomo Ziveri</a></a>'));
       this.echo($('<a>gmail: <a class="link" href="mailto:ggziveri@gmail.com" target="_blank">ggziveri@gmail.com</a></a>'));
+      this.echo($('<a>Discord: <a class="link" href="https://discordapp.com" target="_blank">gxeia#2612</a></a>'));
     }
 }, {
+    checkArity: false,
     greetings: '(-.-)Zzz...\ngzifalsi terminal\npro tip: use \'help\' to display a list of useful commands'
 });
 
