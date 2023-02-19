@@ -6,6 +6,11 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery.terminal/js/jquery.terminal.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery.terminal/css/jquery.terminal.min.css"/>
+    <style>
+      .link {
+        color: white;
+      }
+    </style>
 </head>
 <body>
 <script>
@@ -21,6 +26,7 @@ $('body').terminal({
     this.echo('    education          where I got my education');
     this.echo('    job                where I am currently working/used to work');
     this.echo('    hobby              what are my interests');
+    this.echo('    contact            how to reach me');
   },
 
   hello: function(username) {
@@ -75,10 +81,16 @@ $('body').terminal({
           this.echo('ciao');
           break;
       }
+    },
+
+    contact: function() {
+      this.echo($('<a>LinkedIn profile: <a class="link" href="https://www.linkedin.com/in/giacomo-ziveri/" target="_blank">Giacomo Ziveri</a></a>'));
+      this.echo($('<a>gmail: <a class="link" href="mailto:ggziveri@gmail.com" target="_blank">ggziveri@gmail.com</a></a>'));
     }
 }, {
-    greetings: 'gzifalsi terminal (-.-)Zzz...\npro tip: use \'help\' to display a list of useful commands'
+    greetings: '(-.-)Zzz...\ngzifalsi terminal\npro tip: use \'help\' to display a list of useful commands'
 });
+
 </script>
 </body>
 </html>
