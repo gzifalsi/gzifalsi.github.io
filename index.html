@@ -49,6 +49,7 @@ $('body').terminal({
       $(this).css("background-image", "");
       $("#doom").attr("src", "");
       $("#doom").get(0).pause();
+      currentTheme = "dark";
     } else if (toSet == "light") {
       this.echo('light theme set');
       $(this).css("background-color", "white");
@@ -56,6 +57,7 @@ $('body').terminal({
       $(this).css("background-image", "");
       $("#doom").attr("src", "");
       $("#doom").get(0).pause();
+      currentTheme = "light";
     } else if (toSet == "navy") {
       this.echo('navy theme set');
       $(this).css("background-color", "#086375");
@@ -63,6 +65,7 @@ $('body').terminal({
       $(this).css("background-image", "");
       $("#doom").attr("src", "");
       $("#doom").get(0).pause();
+      currentTheme = "navy";
     } else if (toSet == "green") {
       this.echo('green theme set');
       $(this).css("background-color", "#6cc551");
@@ -70,6 +73,7 @@ $('body').terminal({
       $(this).css("background-image", "");
       $("#doom").attr("src", "");
       $("#doom").get(0).pause();
+      currentTheme = "green";
     } else if (toSet == "hackerman") {
       this.echo('hackerman theme set');
       $(this).css("background-color", "black");
@@ -77,14 +81,16 @@ $('body').terminal({
       $(this).css("background-image", "");
       $("#doom").attr("src", "");
       $("#doom").get(0).pause();
+      currentTheme = "hackerman";
     } else if (toSet == "DOOM") {
       this.echo('the only thing they fear is you');
       $(this).css("background", "url(src/doom.gif) fixed center no-repeat");
       $(this).css("background-size", "auto");
       $(this).css("background-color", "black");
+      $(this).css("--color", "orange");
       $("#doom").attr("src", "src/doomaudio.mp3");
       $("#doom").get(0).play();
-      $(this).css("--color", "orange");
+      currentTheme = "DOOM";
     } else {
       this.echo('please enter a valid theme');
     }
