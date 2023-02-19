@@ -16,27 +16,49 @@
       }
 
       .terminal {
-        --size: 1.5;
+        --size: 1.2;
       }
     </style>
 </head>
 <body>
 <script>
-var currentUser = "guest";
+var currentUser = 'guest';
+var userList = [currentUser];
+var homeList = [currentUser];
+const mainDir = ['bin', 'dev', 'etc', 'usr', 'home', 'lib', 'sbin', 'tmp', 'var', 'root'];
+const usrDir = ['bin', 'man', 'lib', 'local', 'share'];
+const varDir = ['log', 'lock', 'tmp'];
+var currentDir = '/home/' + currentUser;
+var isHomeDir = true;
+var homeDir = currentDir;
+var parentDir = '/home';
+var symbol = '$';
 
 $('body').terminal({
   help: function() {
     this.echo('list of available commands:');
-    this.echo('    clear                  clears the command line interface');
-    this.echo('    help                   displays this list');
-    this.echo('    theme                  sets a theme for this page');
-    this.echo('    login <username>       allows the user to login');
+    this.echo('    clear                  clear the command line interface');
+    this.echo('    banner                 print the starting banner');
+    this.echo('    help                   display this list');
+    this.echo('    theme                  set a theme for this page');
+    this.echo('    sudo -u                login as a different user');
+    this.echo('    pwd                    print working directory');
+    this.echo('    whoami                 return current user');
+    this.echo('    cd                     change directory');
+    this.echo('    ls                     list files and folders in the current directory');
+    this.echo('    shutdown               shutdown this terminal')
+    this.echo('about me:')
     this.echo('    name                   returns my full name');
     this.echo('    age                    returns how old I am');
     this.echo('    education              where I got my education');
     this.echo('    job                    where I am currently working/used to work');
     this.echo('    hobby                  what are my interests');
     this.echo('    contact                how to reach me');
+    this.echo('    resume                 get a copy of my resume');
+  },
+  
+  banner: function() {
+    this.echo('################################\n# gzifalsi terminal v1.23.2.20 #\n################################\n\npro tips:\n- use \'help\' to display a list of useful commands\n- <> are not required in arguments\n- indexes start at 0\n');
   },
 
   theme: function(toSet) {
@@ -97,14 +119,221 @@ $('body').terminal({
     }
   },
 
-  login: function(username) {
-    this.echo('hello, ' + username + '. welcome to this terminal');
-    this.set_prompt(username + '@terminal~$ ');
-    currentUser = username;
+  sudo: function(flag, username) {
+    if (flag == '-u') {
+      if (typeof username === 'undefined') {
+        this.echo('who am I talking to? please use \'sudo -u <username>\'');
+      } else {
+        this.echo('hello, ' + username + '. welcome to this terminal');
+        if (username != 'root') {
+          symbol = '$';
+          currentDir = '/home/' + username;
+          homeList.push(currentUser);
+        } else {
+          symbol = '#';
+          currentDir = '/root';
+        }
+        this.set_prompt(username + '@terminal:~' + symbol + ' ');
+        currentUser = username;
+        userList.push(currentUser);
+        homeDir = currentDir;
+      }
+    } else {
+      this.echo('usage: sudo -u <username>');
+    }
   },
 
+  pwd: function() {
+    this.echo(currentDir);
+  },
+
+  whoami: function() {
+    this.echo(currentUser);
+  },
+
+  cd: function(dir) {
+    if (typeof dir === 'undefined') {
+      currentDir = homeDir;
+      parentDir = '/home';
+      isHomeDir = true;
+    } else if (dir == '..'){
+      if (isHomeDir) {
+        if (currentUser == 'root') {
+          currentDir = '/';
+          parentDir = '/';
+        } else {
+          currentDir = '/home';
+          parentDir = '/';
+        }
+        isHomeDir = false;
+      } else {
+        currentDir = parentDir;
+        parentDir = '/';
+      }
+    } else if (currentDir == '/home') {
+      if (dir == currentUser && currentUser != 'root') {
+        currentDir = homeDir;
+        parentDir = '/home';
+        isHomeDir = true;
+      } else if (userList.includes(dir) && dir != currentUser) {
+        if(currentUser == 'root') {
+          currentDir = '/home/' + dir;
+          isHomeDir = false;
+        } else {
+          this.echo('bash: cd: /home/' + dir + ': Permission denied');
+          currentDir = '/home';
+          parentDir = '/';
+          isHomeDir = false;
+        }
+      } else {
+        this.echo('bash: cd: ' + dir + ': No such file or directory')
+      }
+    } else if (currentDir == '/') {
+      isHomeDir = false;
+      if (dir == 'bin') {
+        currentDir = '/bin';
+      } else if (dir == 'dev') {
+        currentDir = '/dev';
+      } else if (dir == 'etc') {
+        currentDir = '/etc';
+      } else if (dir == 'usr') {
+        currentDir = '/usr';
+      } else if (dir == 'home') {
+        currentDir = '/home';
+      } else if (dir == 'lib') {
+        currentDir = '/lib';
+      } else if (dir == 'sbin') {
+        currentDir = '/sbin';
+      } else if (dir == 'tmp') {
+        currentDir = '/tmp';
+      } else if (dir == 'var') {
+        currentDir = '/var';
+      } else if (dir == 'root') {
+        if (currentUser == 'root') {
+          currentDir = '/root';
+        } else {
+          this.echo('bash: cd: /root: Permission denied');
+        }
+      } else {
+        this.echo('bash: cd: ' + dir + ': No such file or directory')
+      }
+    } else if (currentDir == '/usr') {
+      isHomeDir = false;
+      parentDir = '/usr';
+      if (dir == 'bin') {
+        currentDir = '/usr/bin';
+      } else if (dir == 'man') {
+        currentDir = '/usr/man';
+      } else if (dir == 'lib') {
+        currentDir = '/usr/lib';
+      } else if (dir == 'local') {
+        currentDir = '/usr/local';
+      } else if (dir == 'share') {
+        currentDir = '/usr/share';
+      } else {
+        this.echo('bash: cd: ' + dir + ': No such file or directory')
+      }
+    } else if (currentDir == '/var') {
+      isHomeDir = false;
+      parentDir = '/var';
+      if (dir == 'log') {
+        currentDir = '/var/log';
+      } else if (dir == 'lock') {
+        currentDir = '/var/man';
+      } else if (dir == 'tmp') {
+        currentDir = '/var/tmp';
+      } else {
+        this.echo('bash: cd: ' + dir + ': No such file or directory')
+      }
+    } else {
+      isHomeDir = false;
+      if (dir == '/') {
+        currentDir = '/';
+      } else if (dir == '/bin') {
+        currentDir = '/bin';
+      } else if (dir == '/dev') {
+        currentDir = '/dev';
+      } else if (dir == '/etc') {
+        currentDir = '/etc';
+      } else if (dir == '/usr') {
+        currentDir = '/usr';
+      } else if (dir == '/home') {
+        currentDir = '/home';
+      } else if (dir == '/lib') {
+        currentDir = '/lib';
+      } else if (dir == '/sbin') {
+        currentDir = '/sbin';
+      } else if (dir == '/tmp') {
+        currentDir = '/tmp';
+      } else if (dir == '/var') {
+        currentDir = '/var';
+      } else if (dir == '/root') {
+        if (currentUser == 'root') {
+          currentDir = '/root';
+        } else {
+          this.echo('bash: cd: /root: Permission denied');
+        }
+      } else if (dir == '/usr/bin') {
+        currentDir = '/usr/bin';
+        parentDir = '/usr';
+      } else if (dir == '/usr/man') {
+        currentDir = '/usr/man';
+        parentDir = '/usr';
+      } else if (dir == '/usr/lib') {
+        currentDir = '/usr/lib';
+        parentDir = '/usr';
+      } else if (dir == '/usr/local') {
+        currentDir = '/usr/local';
+        parentDir = '/usr';
+      } else if (dir == '/usr/share') {
+        currentDir = '/usr/share';
+        parentDir = '/usr';
+      } else if (dir == '/var/log') {
+        currentDir = '/var/log';
+        parentDir = '/var';
+      } else if (dir == '/var/lock') {
+        currentDir = '/var/lock';
+        parentDir = '/var';
+      } else if (dir == '/var/tmp') {
+        currentDir = '/var/tmp';
+        parentDir = '/var';
+      } else {
+        this.echo('bash: cd: ' + dir + ': No such file or directory');
+      }
+    }
+
+    if (currentDir == homeDir) {
+      this.set_prompt(currentUser + '@terminal:~' + symbol + ' ');
+    } else {
+      this.set_prompt(currentUser + '@terminal:' + currentDir + symbol + ' ');
+    }
+  },
+  
+  ls: function() {
+    if (currentDir == '/home') {
+      this.echo(homeList);
+    } else if (currentDir == '/') {
+      this.echo(mainDir)
+    } else if (currentDir == '/usr') {
+      this.echo(usrDir);
+    } else if (currentDir == '/var') {
+      this.echo(varDir);
+    } else {
+      this.echo('(empty folder)')
+    }
+  },
+
+  shutdown: function() { //ez crash
+    var ciao = "ciao";
+    while(1) {
+      ciao = ciao += "ciao";
+    }
+  },
+
+  //personal stuff
+
   name: function() {
-    this.echo('my name is Giacomo Ziveri')
+    this.echo('my name is Giacomo Ziveri');
   },
 
   age: function() {
@@ -137,7 +366,7 @@ $('body').terminal({
     hobby: function(arg, index = -1) {
       if (typeof arg === "undefined"){
         this.echo('computer hardware, linux, cryptocurrencies, gaming, music, calisthenics');
-        this.echo('enter \'hobby discover <hobbyIndex>\' to get a detailed explanation');
+        this.echo('enter \'hobby discover <hobbyIndex>\' to get a detailed explanation (indexes start from 0)');
       } else if (arg == "discover") {
         switch (index) {
           default:
@@ -175,8 +404,8 @@ $('body').terminal({
     }
 }, {
     checkArity: false,
-    greetings: '(-.-)Zzz...\ngzifalsi terminal\npro tip: use \'help\' to display a list of useful commands\nremember that <> are not required in arguments\nAND THAT INDEXES START AT 0',
-    prompt: 'guest@terminal~$ ',
+    greetings: '################################\n# gzifalsi terminal v1.23.2.20 #\n################################\n\npro tips:\n- use \'help\' to display a list of useful commands\n- \'<>\' are not required in arguments\n- indexes start at 0\n',
+    prompt: 'guest@terminal:~$ '
 });
 
 </script>
