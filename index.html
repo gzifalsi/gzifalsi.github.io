@@ -10,6 +10,14 @@
       .link {
         color: white;
       }
+
+      .terminal{ 
+        --color: #a9a9a9;
+      }
+
+      .terminal {
+        --size: 1.5;
+      }
     </style>
 </head>
 <body>
@@ -20,6 +28,7 @@ $('body').terminal({
     this.echo('list of available commands:');
     this.echo('    clear              clears the command line interface');
     this.echo('    help               displays this list');
+    this.echo('    theme              sets a theme for this page');
     this.echo('    hello <username>   greets the user');
     this.echo('    name               returns my full name');
     this.echo('    age                returns how old I am');
@@ -27,6 +36,50 @@ $('body').terminal({
     this.echo('    job                where I am currently working/used to work');
     this.echo('    hobby              what are my interests');
     this.echo('    contact            how to reach me');
+  },
+
+  theme: function(toSet) {
+    if (typeof toSet === "undefined") {
+      this.echo('themes available: dark (default), light, navy, green, DOOM')
+    } else if (toSet == "dark") {
+      this.echo('dark theme set');
+      $(this).css("background-color", "#000000");
+      $(this).css("--color", "#a9a9a9");
+      $(this).css("background", "");
+      $("#doom").attr("src", "");
+      $("#doom").get(0).pause();
+    } else if (toSet == "light") {
+      this.echo('light theme set');
+      $(this).css("background-color", "white");
+      $(this).css("--color", "black");
+      $(this).css("background", "");
+      $("#doom").attr("src", "");
+      $("#doom").get(0).pause();
+    } else if (toSet == "navy") {
+      this.echo('navy theme set');
+      $(this).css("background-color", "#086375");
+      $(this).css("--color", "#1dd3b0");
+      $(this).css("background", "");
+      $("#doom").attr("src", "");
+      $("#doom").get(0).pause();
+    } else if (toSet == "green") {
+      this.echo('green theme set');
+      $(this).css("background-color", "#6cc551");
+      $(this).css("--color", "#447604");
+      $(this).css("background", "");
+      $("#doom").attr("src", "");
+      $("#doom").get(0).pause();
+    } else if (toSet == "DOOM") {
+      this.echo('the only thing they fear is you');
+      $(this).css("background", "url(src/doom.gif) fixed center no-repeat");
+      $(this).css("background-size", "auto");
+      $(this).css("background-color", "black");
+      $("#doom").attr("src", "src/doomaudio.mp3");
+      $("#doom").get(0).play();
+      $(this).css("--color", "orange");
+    } else {
+      this.echo('please enter a valid theme');
+    }
   },
 
   hello: function(username) {
@@ -64,8 +117,8 @@ $('body').terminal({
       this.echo('API Management Intern @ Alten, based in Milan, Italy');
     },
 
-    hobby: function(arg = 0, index = -1) {
-      if (!arg){
+    hobby: function(arg, index = -1) {
+      if (typeof arg === "undefined"){
         this.echo('computer hardware, linux, cryptocurrencies, gaming, music, calisthenics');
         this.echo('enter \'hobby discover <hobbyIndex>\' to get a detailed explanation');
       } else if (arg == "discover") {
@@ -94,6 +147,7 @@ $('body').terminal({
         }
       } else {
         this.echo('wrong argument: ' + arg);
+        this.echo('available arguments: discover');
       }
     },
 
@@ -104,9 +158,13 @@ $('body').terminal({
     }
 }, {
     checkArity: false,
-    greetings: '(-.-)Zzz...\ngzifalsi terminal\npro tip: use \'help\' to display a list of useful commands'
+    greetings: '(-.-)Zzz...\ngzifalsi terminal\npro tip: use \'help\' to display a list of useful commands',
+    prompt: 'guest@terminal~$ ',
+    color: 'red',
 });
 
 </script>
+
+<audio source id="doom" src="" type="audio/mpeg"></audio>
 </body>
 </html>
