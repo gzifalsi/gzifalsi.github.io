@@ -165,11 +165,71 @@ $('body').terminal({
           currentDir = '/home';
           parentDir = '/';
         }
-        isHomeDir = false;
       } else {
         currentDir = parentDir;
         parentDir = '/';
       }
+      isHomeDir = false;
+    } else if (dir == '/') {
+      currentDir = '/';
+    } else if (dir == '/bin') {
+      currentDir = '/bin';
+      parentDir = '/';
+    } else if (dir == '/dev') {
+      currentDir = '/dev';
+      parentDir = '/';
+    } else if (dir == '/etc') {
+      currentDir = '/etc';
+      parentDir = '/';
+    } else if (dir == '/usr') {
+      currentDir = '/usr';
+      parentDir = '/';
+    } else if (dir == '/home') {
+      currentDir = '/home';
+      parentDir = '/';
+    } else if (dir == '/lib') {
+      currentDir = '/lib';
+      parentDir = '/';
+    } else if (dir == '/sbin') {
+      currentDir = '/sbin';
+      parentDir = '/';
+    } else if (dir == '/tmp') {
+      currentDir = '/tmp';
+      parentDir = '/';
+    } else if (dir == '/var') {
+      currentDir = '/var';
+      parentDir = '/';
+    } else if (dir == '/root') {
+      if (currentUser == 'root') {
+        currentDir = '/root';
+        parentDir = '/';
+      } else {
+        this.echo('bash: cd: /root: Permission denied');
+      }
+    } else if (dir == '/usr/bin') {
+      currentDir = '/usr/bin';
+      parentDir = '/usr';
+    } else if (dir == '/usr/man') {
+      currentDir = '/usr/man';
+      parentDir = '/usr';
+    } else if (dir == '/usr/lib') {
+      currentDir = '/usr/lib';
+      parentDir = '/usr';
+    } else if (dir == '/usr/local') {
+      currentDir = '/usr/local';
+      parentDir = '/usr';
+    } else if (dir == '/usr/share') {
+      currentDir = '/usr/share';
+      parentDir = '/usr';
+    } else if (dir == '/var/log') {
+      currentDir = '/var/log';
+      parentDir = '/var';
+    } else if (dir == '/var/lock') {
+      currentDir = '/var/lock';
+      parentDir = '/var';
+    } else if (dir == '/var/tmp') {
+      currentDir = '/var/tmp';
+      parentDir = '/var';
     } else if (currentDir == '/home') {
       if (dir == currentUser && currentUser != 'root') {
         currentDir = homeDir;
@@ -189,6 +249,7 @@ $('body').terminal({
         this.echo('bash: cd: ' + dir + ': No such file or directory')
       }
     } else if (currentDir == '/') {
+      parentDir = '/';
       isHomeDir = false;
       if (dir == 'bin') {
         currentDir = '/bin';
@@ -198,6 +259,21 @@ $('body').terminal({
         currentDir = '/etc';
       } else if (dir == 'usr') {
         currentDir = '/usr';
+      } else if (dir == 'usr/bin') {
+        currentDir = '/usr/bin';
+        parentDir = '/usr';
+      } else if (dir == 'usr/man') {
+        currentDir = '/usr/man';
+        parentDir = '/usr';
+      } else if (dir == 'usr/lib') {
+        currentDir = '/usr/lib';
+        parentDir = '/usr';
+      } else if (dir == 'usr/local') {
+        currentDir = '/usr/local';
+        parentDir = '/usr';
+      } else if (dir == 'usr/share') {
+        currentDir = '/usr/share';
+        parentDir = '/usr';
       } else if (dir == 'home') {
         currentDir = '/home';
       } else if (dir == 'lib') {
@@ -208,9 +284,19 @@ $('body').terminal({
         currentDir = '/tmp';
       } else if (dir == 'var') {
         currentDir = '/var';
+      } else if (dir == 'var/log') {
+        currentDir = '/var/log';
+        parentDir = '/var';
+      } else if (dir == 'var/lock') {
+        currentDir = '/var/lock';
+        parentDir = '/var';
+      } else if (dir == 'var/tmp') {
+        currentDir = '/var/tmp';
+        parentDir = '/var';
       } else if (dir == 'root') {
         if (currentUser == 'root') {
           currentDir = '/root';
+          isHomeDir = false;
         } else {
           this.echo('bash: cd: /root: Permission denied');
         }
@@ -220,88 +306,23 @@ $('body').terminal({
     } else if (currentDir == '/usr') {
       isHomeDir = false;
       parentDir = '/usr';
-      if (dir == 'bin') {
-        currentDir = '/usr/bin';
-      } else if (dir == 'man') {
-        currentDir = '/usr/man';
-      } else if (dir == 'lib') {
-        currentDir = '/usr/lib';
-      } else if (dir == 'local') {
-        currentDir = '/usr/local';
-      } else if (dir == 'share') {
-        currentDir = '/usr/share';
+      if (usrDir.includes(dir)) {
+        currentDir = '/usr/' + dir;
       } else {
         this.echo('bash: cd: ' + dir + ': No such file or directory')
       }
     } else if (currentDir == '/var') {
       isHomeDir = false;
       parentDir = '/var';
-      if (dir == 'log') {
-        currentDir = '/var/log';
-      } else if (dir == 'lock') {
-        currentDir = '/var/man';
-      } else if (dir == 'tmp') {
-        currentDir = '/var/tmp';
+      if (varDir.includes(dir)) {
+        currentDir = '/var/' + dir;
       } else {
         this.echo('bash: cd: ' + dir + ': No such file or directory')
       }
     } else {
-      isHomeDir = false;
-      if (dir == '/') {
-        currentDir = '/';
-      } else if (dir == '/bin') {
-        currentDir = '/bin';
-      } else if (dir == '/dev') {
-        currentDir = '/dev';
-      } else if (dir == '/etc') {
-        currentDir = '/etc';
-      } else if (dir == '/usr') {
-        currentDir = '/usr';
-      } else if (dir == '/home') {
-        currentDir = '/home';
-      } else if (dir == '/lib') {
-        currentDir = '/lib';
-      } else if (dir == '/sbin') {
-        currentDir = '/sbin';
-      } else if (dir == '/tmp') {
-        currentDir = '/tmp';
-      } else if (dir == '/var') {
-        currentDir = '/var';
-      } else if (dir == '/root') {
-        if (currentUser == 'root') {
-          currentDir = '/root';
-        } else {
-          this.echo('bash: cd: /root: Permission denied');
-        }
-      } else if (dir == '/usr/bin') {
-        currentDir = '/usr/bin';
-        parentDir = '/usr';
-      } else if (dir == '/usr/man') {
-        currentDir = '/usr/man';
-        parentDir = '/usr';
-      } else if (dir == '/usr/lib') {
-        currentDir = '/usr/lib';
-        parentDir = '/usr';
-      } else if (dir == '/usr/local') {
-        currentDir = '/usr/local';
-        parentDir = '/usr';
-      } else if (dir == '/usr/share') {
-        currentDir = '/usr/share';
-        parentDir = '/usr';
-      } else if (dir == '/var/log') {
-        currentDir = '/var/log';
-        parentDir = '/var';
-      } else if (dir == '/var/lock') {
-        currentDir = '/var/lock';
-        parentDir = '/var';
-      } else if (dir == '/var/tmp') {
-        currentDir = '/var/tmp';
-        parentDir = '/var';
-      } else {
-        this.echo('bash: cd: ' + dir + ': No such file or directory');
-      }
+      this.echo('bash: cd: ' + dir + ': No such file or directory');
     }
-
+    
     if (currentDir == homeDir) {
       this.set_prompt(currentUser + '@terminal:~' + symbol + ' ');
     } else {
