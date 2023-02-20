@@ -28,6 +28,7 @@ var homeList = [currentUser];
 const mainDir = ['bin', 'dev', 'etc', 'usr', 'home', 'lib', 'sbin', 'tmp', 'var', 'root'];
 const usrDir = ['bin', 'man', 'lib', 'local', 'share'];
 const varDir = ['log', 'lock', 'tmp'];
+var storageDict = {'/': mainDir, '/usr': usrDir, '/var': varDir, '/home': homeList};
 var currentDir = '/home/' + currentUser;
 var isHomeDir = true;
 var homeDir = currentDir;
@@ -156,7 +157,7 @@ $('body').terminal({
       currentDir = homeDir;
       parentDir = '/home';
       isHomeDir = true;
-    } else if (dir == '..'){
+    } else if (dir == '..'){ //go to parent folder
       if (isHomeDir) {
         if (currentUser == 'root') {
           currentDir = '/';
@@ -170,7 +171,7 @@ $('body').terminal({
         parentDir = '/';
       }
       isHomeDir = false;
-    } else if (dir == '/') {
+    } else if (dir == '/') { //absolute paths
       currentDir = '/';
     } else if (dir == '/bin') {
       currentDir = '/bin';
@@ -248,7 +249,7 @@ $('body').terminal({
       } else {
         this.echo('bash: cd: ' + dir + ': No such file or directory')
       }
-    } else if (currentDir == '/') {
+    } else if (currentDir == '/') { //local paths (in / dir)
       parentDir = '/';
       isHomeDir = false;
       if (dir == 'bin') {
@@ -303,7 +304,7 @@ $('body').terminal({
       } else {
         this.echo('bash: cd: ' + dir + ': No such file or directory')
       }
-    } else if (currentDir == '/usr') {
+    } else if (currentDir == '/usr') { //usr paths
       isHomeDir = false;
       parentDir = '/usr';
       if (usrDir.includes(dir)) {
@@ -311,7 +312,7 @@ $('body').terminal({
       } else {
         this.echo('bash: cd: ' + dir + ': No such file or directory')
       }
-    } else if (currentDir == '/var') {
+    } else if (currentDir == '/var') { //var paths
       isHomeDir = false;
       parentDir = '/var';
       if (varDir.includes(dir)) {
@@ -322,8 +323,8 @@ $('body').terminal({
     } else {
       this.echo('bash: cd: ' + dir + ': No such file or directory');
     }
-    
-    if (currentDir == homeDir) {
+
+    if (currentDir == homeDir) { //set prompt to currentDir with # if root or $ if not
       this.set_prompt(currentUser + '@terminal:~' + symbol + ' ');
     } else {
       this.set_prompt(currentUser + '@terminal:' + currentDir + symbol + ' ');
@@ -332,13 +333,13 @@ $('body').terminal({
   
   ls: function() {
     if (currentDir == '/home') {
-      this.echo(homeList);
+      this.echo(storageDict['/home']);
     } else if (currentDir == '/') {
-      this.echo(mainDir)
+      this.echo(storageDict['/']);
     } else if (currentDir == '/usr') {
-      this.echo(usrDir);
+      this.echo(storageDict['/usr']);
     } else if (currentDir == '/var') {
-      this.echo(varDir);
+      this.echo(storageDict['/var']);
     } else {
       this.echo('(empty folder)')
     }
