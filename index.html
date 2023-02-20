@@ -11,12 +11,9 @@
         color: white;
       }
 
-      .terminal{ 
-        --color: #a9a9a9;
-      }
-
       .terminal {
         --size: 1.2;
+        --color: #a9a9a9;
       }
     </style>
 </head>
@@ -42,6 +39,7 @@ $('body').terminal({
     this.echo('    banner                 print the starting banner');
     this.echo('    help                   display this list');
     this.echo('    theme                  set a theme for this page');
+    this.echo('    set                    customize text and background');
     this.echo('    sudo -u                login as a different user');
     this.echo('    pwd                    print working directory');
     this.echo('    whoami                 return current user');
@@ -117,6 +115,32 @@ $('body').terminal({
       currentTheme = "DOOM";
     } else {
       this.echo('please enter a valid theme');
+    }
+  },
+
+  set: function(section, property, value) { //text -> color, dimension; background -> color
+    if (typeof section === 'undefined' || (section != 'text' && section != 'background')) {
+      this.echo('usage:');
+      this.echo('set text <property> <value> (properties: color, dimension)');
+      this.echo('set background color <value> (you can use bg instead of background)');
+      this.echo('e.g.: set text color black - to set the text color to black');
+      this.echo('e.g.: set text dimension small - to set the text dimension to small');
+      this.echo('e.g.: set bg white - to set the background color to white');
+    } else if (section == 'text') {
+      if (typeof property === 'undefined' || (property != 'color' && property != 'dimension' && property != 'dim')) {
+        this.echo('usage: set text <property> <value> (properties: color, dimension)');
+      } else if (property == 'color') {
+        $(this).css("--color", value);
+      } else if (property == 'dimension' || property == 'dim') {
+        $(this).css("--size", value); //NOT WORKING LMAO
+      }
+    } else if (section == 'background' || section == 'bg') {
+      if (typeof property === 'undefined') {
+        this.echo('usage: set bg <color>');
+        this.echo('you can enter colors as rgba(), #hex or by their name')
+      } else {
+        $(this).css("background-color", property);
+      }
     }
   },
 
